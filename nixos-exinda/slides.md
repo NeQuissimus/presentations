@@ -32,8 +32,6 @@ nixpkgs.git                          git-minimal-2.7.1
 
 ```
 ~> nix-env -i -A nixpkgs.gitAndTools.gitFull
-
-~> nix-env -i -A nixpkgs.gitAndTools.gitFull
 installing ‘git-2.7.1’
 these paths will be fetched (14.73 MiB download, 84.78 MiB unpacked):
   /nix/store/07zkprjj5s6nvl2b6hzmd9wz4li90cnf-perl-Encode-Locale-1.05
