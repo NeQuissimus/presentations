@@ -75,7 +75,7 @@ se-3.2.3
 # Nix - Rollback
 
 ```
-~> nix-env --Rollback
+~> nix-env --rollback
 switching from generation 8 to 7
 ~> nix-env -i -A nixpkgs.gitAndTools.gitFull
 installing ‘git-2.7.1’
@@ -87,6 +87,7 @@ installing ‘git-2.7.1’
 
 - Atomic updates
 - Rollback
+- Single-file configuration
 
 # NixOS - Installation
 
