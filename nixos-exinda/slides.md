@@ -22,6 +22,12 @@ nixpkgs.git                          git-minimal-2.7.1
 
 ---
 
+# Nix - Package definition
+
+<https://github.com/NeQuissimus/nixpkgs/blob/master/pkgs/development/compilers/kotlin/default.nix>
+
+---
+
 # Nix - Install package
 
 ```
