@@ -3,7 +3,7 @@
 
 ---
 
-# Nix - Package Manager
+# Nix - Package manager
 
 - Linux / UNIX
 - Source / binary model
@@ -135,7 +135,7 @@ New default boot entry
 
 ---
 
-# NixOS - Only install what you actually Need
+# NixOS - Only install what you actually need
 
 ![inline](./headless.jpg)
 
