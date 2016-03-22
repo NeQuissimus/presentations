@@ -125,7 +125,7 @@ New default boot entry
 
 ---
 
-# NixOS - Failed update?
+# NixOS - Bad update?
 
 ![inline](./nixos-grub.png)
 
