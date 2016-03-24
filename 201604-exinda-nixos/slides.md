@@ -18,6 +18,7 @@
 
 nixpkgs.gitAndTools.gitFull          git-2.7.1
 nixpkgs.git                          git-minimal-2.7.1
+[...]
 ```
 
 ---
