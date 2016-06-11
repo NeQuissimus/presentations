@@ -1,0 +1,84 @@
+% Gitolite vs GitHub Enterprise
+% Tim Steinbach
+
+# Availability
+
+## Gitolite
+
+- Lab-hosted
+- No backup strategy
+- Past crashes have led to data loss
+
+# Availability
+
+## GitHub Enterprise
+
+- AWS hosted
+- Built-in ability for backups (local or S3)
+- Amazon-managed uptime
+
+# Management
+
+## Gitolite
+
+- All repositories managed via text file
+- Users' SSH keys need to be added by admin
+
+# Management
+
+## GitHub Enterprise
+
+- Easy-to-use web interface for repository management
+- Users configure their own SSH keys
+
+# Security
+
+## Gitolite
+
+- None beyond git permissions
+
+# Security
+
+## GitHub Enterprise
+
+- Built-in encryption in-flight
+- Optional encryption for data at rest
+- Two-factor authentication
+- Full activity auditing
+
+# Integrations
+
+## Gitolite
+
+- Requires custom scripts for every integration
+- Fragile, requires manual management
+
+# Integrations
+
+## GitHub Enterprise
+
+- Plenty of built-in integrations
+- Solid, widely tested/used connectors to other platforms (Jenkins, Slack etc.)
+- Smart commits (i.e. change a ticket status with keywords in commit messages)
+
+# Features
+
+## Gitolite
+
+- Plain git server
+- Everything beyond simple git has to be custom-built
+
+# Features
+
+## GitHub Enterprise
+
+- Built-in code review tool, vastly superior to CodeCollab
+- Simplified git workflow
+- Ability to integrate static analysis tools into code reviews, for automated code quality reviews
+- Dashboards across projects
+- GitHub CLI for easier usage of git
+
+# Notes
+
+- Encrypted S3 backups - <https://github.com/trailofbits/ghe-backup>
+- GitHub CLI - <https://hub.github.com/>
