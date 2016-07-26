@@ -38,14 +38,15 @@ object IntLess5 { def apply(i: Int): Option[IntLess5] = Some(i).filter(_ < 5).ma
 
 ---
 
-### Object wrappers
+### Runtime (1)
 
-- Runtime hit
+- Object wrapper
+- Functions Int => T no longer apply
 - Composition?
 
 ---
 
-### Composition
+### Runtime (2)
 
 ```scala
 class IntLess5(i: Int)
