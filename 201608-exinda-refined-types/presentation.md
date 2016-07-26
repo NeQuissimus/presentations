@@ -23,7 +23,7 @@ case class IntLess5(i: Int) {
 }
 ```
 
-![left fit](./exception.jpg)
+![left fit](./exceptions.jpg)
 
 ---
 
