@@ -51,6 +51,7 @@ object IntLess5 { def apply(i: Int): Option[IntLess5] = Some(i).filter(_ < 5).ma
 class IntLess5(i: Int)
 class IntLess10(i: Int)
 
+def ohno: IntLess10 = IntLess10(11) // Runtime exception!
 def ohoh: IntLess10 = IntLess5(3) // Compile error!
 ```
 
