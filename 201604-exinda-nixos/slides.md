@@ -90,6 +90,8 @@ installing ‘git-2.7.1’
 - Rollback
 - Single-file configuration
 
+---
+
 # NixOS - Installation
 
 ```
