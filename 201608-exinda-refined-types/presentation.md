@@ -28,23 +28,23 @@ How do you ensure that a value is only a subset of all values allowed by its typ
 ### Range checks (1)
 
 ```scala
-case class IntLess5(i: Int) {
-    require(i < 5, "value is too large")
-}
+class IntLess5(i: Int)
+object IntLess5 { def apply(i: Int): Option[IntLess5] = Some(i).filter(_ < 5).map(new IntLess5(_)) }
 ```
 
-![left fit](./exceptions.jpg)
+![left fit](./factory.jpg)
 
 ---
 
 ### Range checks (2)
 
 ```scala
-class IntLess5(i: Int)
-object IntLess5 { def apply(i: Int): Option[IntLess5] = Some(i).filter(_ < 5).map(new IntLess5(_)) }
+case class IntLess5(i: Int) {
+    require(i < 5, "value is too large")
+}
 ```
 
-![left fit](./factory.jpg)
+![left fit](./exceptions.jpg)
 
 ---
 
@@ -59,8 +59,8 @@ object IntLess5 { def apply(i: Int): Option[IntLess5] = Some(i).filter(_ < 5).ma
 ### Runtime (2)
 
 ```scala
-class IntLess5(i: Int)
-class IntLess10(i: Int)
+class IntLess5(i: Int) = { ... }
+class IntLess10(i: Int) = { ... }
 
 def ohno: IntLess10 = IntLess10(11) // Runtime exception!
 def ohoh: IntLess10 = IntLess5(3) // Compile error!
