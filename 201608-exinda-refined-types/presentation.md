@@ -15,6 +15,16 @@ slidenumbers: true
 
 ---
 
+### Problem statement
+
+How do you ensure that a value is only a subset of all values allowed by its type?
+
+- Int that is always < 5
+- String that contains a valid regular expression
+- Alphanumeric String
+
+---
+
 ### Range checks (1)
 
 ```scala
@@ -100,7 +110,7 @@ val i: Int = restApi.get("/api/v1/foo")
 val i: Int = restApi.get("/api/v1/foo")
 val refined: Either[String, IntLess5] = refineV[IntLess5](i)
 
-// Either is right-biased
+// Either is right-biased by convention
 // will be Left("Predicate failed: (X < 5).")
 // or Right(X)
 ```
@@ -139,6 +149,19 @@ error: Url predicate failed: unknown protocol: htp
 
 type ZeroToOne = Not[Less[W.`0.0`.T]] And Not[Greater[W.`1.0`.T]]
 defined type alias ZeroToOne
+```
+
+---
+
+### Benefits
+
+```scala
+val s: String = ???
+val maybeUrlString: Either[String, String Refined Url] = refineV[String Refined Url](s)
+val maybeUrl: Either[String, Url] = maybeUrlString.fold(
+    left => Left(left),
+    right => Right(new java.net.URL(right)) // This will always work, no runtime exceptions!
+)
 ```
 
 ---
