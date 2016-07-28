@@ -29,7 +29,10 @@ How do you ensure that a value is only a subset of all values allowed by its typ
 
 ```scala
 class IntLess5(i: Int)
-object IntLess5 { def apply(i: Int): Option[IntLess5] = Some(i).filter(_ < 5).map(new IntLess5(_)) }
+object IntLess5 {
+    def apply(i: Int): Option[IntLess5] =
+            Some(i).filter(_ < 5).map(new IntLess5(_))
+}
 ```
 
 ![left fit](./factory.jpg)
@@ -44,7 +47,7 @@ case class IntLess5(i: Int) {
 }
 ```
 
-![left fit](./exceptions.jpg)
+![right fit](./exceptions.jpg)
 
 ---
 
