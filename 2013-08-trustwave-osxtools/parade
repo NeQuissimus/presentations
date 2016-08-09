@@ -1,0 +1,27 @@
+title "OSX productivity tools"
+
+theme "archetect"
+
+section "Introduction" do
+  slides "0_intro.md"
+end
+
+section "Free" do
+  slides "cover_free.md"
+  slides "1_cleanmydrive.md"
+  slides "2_alfred.md"
+  slides "3_slate.md"
+  slides "4_sublime.md"
+  slides "5_commandline.md"
+end
+
+section "Paid" do
+  slides "cover_paid.md"
+  slides "6_witch.md"
+  slides "7_1p.md"
+  slides "8_betterzip.md"
+end
+
+section "Outro" do
+  slides "legal.md"
+end
