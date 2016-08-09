@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Be an author, not just a coder</title>
+
+		<meta name="description" content="About readability, maintainability and sanity">
+		<meta name="author" content="Tim Steinbach">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+		<style>
+			.reveal td {padding-left: 30px !important; padding-right: 30px !important;}
+			.underline {text-decoration: underline !important;}
+			.center {text-align: center !important;}
+			.automargin {margin-left: auto !important; margin-right: auto !important;}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+				<section>
+					<h1>Be an author, not just a coder</h1>
+					<h3>About readability, maintainability and sanity</h3>
+					<p>
+						<small>By <a href="http://NeQuissimus.com">Tim Steinbach</a> / <a href="http://twitter.com/tim_steinbach">@tim_steinbach</a></small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Book vs. Code</h2>
+					<h4>Reading is fun! (also, 5-year olds can do it)</h4>
+					<p>
+						<span class="fragment underline">Chapter</span><span class="fragment">: Few pages of reading</span><span class="fragment">, logical unit</span><span class="fragment">, <strong>one</strong> chunk of the plot</span>
+					</p>
+					<p>
+						<span class="fragment underline">Class</span><span class="fragment">: Limited number of lines</span><span class="fragment">, logical unit</span><span class="fragment">, <strong>single</strong> responsibility</span>
+					</p>
+				</section>
+
+				<section>
+					<h2>Book vs. Code</h2>
+					<h4>Book = Code?</h4>
+					<p>
+					<span class="fragment underline">Paragraph</span><span class="fragment">: Multiple per page</span><span class="fragment">, <strong>one</strong> action/dialogue
+					<br/><span class="fragment underline">Function</span><span class="fragment">: Multiple per class</span><span class="fragment">, does <strong>one</strong> thing
+					</p>
+				</section>
+
+				<section>
+					<h2>How not to do it</h2>
+					<h4>Your entire book is one chapter</h4>
+					<p>
+						<pre><code data-trim>> echo $(($(wc -l HomeGUI.java | awk '{print $1}') - $(grep -c '^$' HomeGUI.java)))
+23856</code></pre>
+					</p>
+					<p class="fragment">
+						<img src="img/paper.jpg" alt="paper" style="height:400px;width:400px;" />
+					</p>
+				</section>
+
+				<section>
+					<h2>How not to do it</h2>
+					<h4>One paragraph spans most of the chapter</h4>
+					<p>
+						<pre><code data-trim>4512 public void buildUI() {</code><code data-trim class="fragment">...</code><code data-trim class="fragment">...</code><code data-trim class="fragment">...</code><code data-trim class="fragment">13952 } // buildUI</code></pre>
+					</p>
+				</section>
+
+				<section>
+					<p>
+						<img src="img/koala.jpg" alt="koala" />
+					</p>
+				</section>
+
+				<section>
+					<h2>Classes</h2>
+					<h4>Do one thing and do it well</h4>
+					<p><ul>
+						<li class="fragment">Single reponsibility principle</li>
+						<li class="fragment">No "god classes"</li>
+					</ul></p>
+				</section>
+
+				<section>
+					<h2>Methods</h2>
+					<h4>Do one thing and do it well</h4>
+					<p><ul>
+						<li class="fragment">Fit on screen</li>
+						<li class="fragment">DRY principle (Don't repeat yourself)</li>
+						<li class="fragment">Be useful (not dead / commented out)</li>
+					</ul></p>
+				</section>
+
+				<section>
+					<section>
+						<h2>Comments</h2>
+						<h4>Explain the API, not the code</h4>
+						<p><ul>
+							<li class="fragment">API documentation</li>
+							<li class="fragment">TODO (please actually come back!)</li>
+							<li class="fragment">No changelog</li>
+							<li class="fragment">No duplication</li>
+						</ul></p>
+					</section>
+					<section>
+						<h2>Bad comment</h2>
+						<h4>Duplication</h4>
+						<pre><code>/**
+* Validate user password
+*
+* @param username The username
+* @param password The password
+*/
+boolean validate(String username, String password) {...}
+						</code></pre>
+					</section>
+					<section>
+						<h2>Bad comment</h2>
+						<h4>Code explanation</h4>
+						<pre><code>boolean validate(String username, String password) {
+	// This will query the database and return the line that matches
+	ResultSet rs = SQL.executeQuery(SQL.VALIDATION, username, password);
+	return rs.next(); // There will be no next if there was no match
+}
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<h2>Code</h2>
+					<h4>Variable names</h4>
+					<p><ul>
+						<li class="fragment">Descriptive names</li>
+						<li class="fragment">Separate constants vs. variables (CONSTANT_NAME vs. variableName)</li>
+						<li class="fragment">Do not prefix variable names with an underscore (It is so 80s*)</li>
+					</ul></p>
+
+					<p class="fragment"><small>The Sun/Oracle Java Code Conventions have been discouraging it since 1995</small></p>
+				</section>
+
+				<section>
+					<section>
+					  <h2>Code</h2>
+					  <h4>Magic values</h4>
+					  <p><ul>
+					  	<li class="fragment">No fix values within methods</li>
+					  	<li class="fragment">Keep user-facing texts in resource bundles</li>
+					  	<li class="fragment">Keep constant values in constants (duh!)</li>
+					  </ul></p>
+				  </section>
+				  <section>
+				  	<h2>Magic values</h2>
+				  	<h4>Magic Strings, Integers...</h4>
+				  	<pre><code>static boolean printIfGreater(int number) {
+boolean wasGreater = false;
+if (number > 2) {
+	System.out.println("Greater!");
+	wasGreater = true;
+}
+return wasGreater;
+}</code></pre>
+<pre class="fragment"><code>static final int COMPARE_TO = 2;
+static final String MESSAGE_IF_GREATER = "Greater!";
+
+static boolean printIfGreater(int number) {
+boolean wasGreater = false;
+if (number > COMPARE_TO) {
+	System.out.println(MESSAGE_IF_GREATER);
+	wasGreater = true;
+}
+return wasGreater;
+}</code></pre>
+				  </section>
+				</section>
+
+				<section>
+					<h2>Do/Don't</h2>
+					<h4>Singleton</h4>
+					<p>Use an Enumeration with one element</p>
+					<p>(Remember: Enums can have methods and fields!)</p>
+					<pre><code>/** There can be only one */
+public enum Highlander { INSTANCE }</code></pre>
+					<p><ul>
+						<li class="fragment">Serialization for free</li>
+						<li class="fragment">Protection against multiple instantiation through deserialization and reflection for free</li>
+					</ul></p>
+				</section>
+
+				<section>
+					<h2>Do/Don't</h2>
+					<h4>Prefer immutability</h4>
+					<p>"Classes should be immutable unless there's a very good reason to make them mutable"</p>
+					<p><small>(Joshua Bloch, Effective Java)</small></p>
+					<p><ul>
+						<li class="fragment">Easy to reason about</li>
+						<li class="fragment">Can be shared</li>
+						<li class="fragment">Thread-safe</li>
+						<li class="fragment">Easy to test</li>
+					</ul></p>
+				</section>
+
+				<section>
+					<section>
+						<h2>Do/Don't</h2>
+						<h4>Design with intention</h4>
+						<p>Either design for inheritence or make the class final</p>
+						<p>Note: Never call an overridable method from a constructor!</p>
+					</section>
+					<section>
+						<h2>Constructors</h2>
+						<h4>Do not call overridable methods</h4>
+						<pre><code>public class Super {
+public Super() {overrideMe();}
+public void overrideMe() {}
+}
+
+public final class Sub extends Super {
+private final Date date;
+public Sub() {date = new Date();}
+
+@override public void overrideMe() {
+System.out.println(date.toString());
+}}
+
+public static void main(String[] args) {
+new Sub().overrideMe();
+}
+						</code></pre>
+					</section>
+					<section>
+					  <pre><code>[Desktop] $ java Main
+Exception in thread "main" java.lang.NullPointerException
+	at Sub.overrideMe(Sub.java:7)
+	at Super.&lt;init&gt;(Super.java:3)
+	at Sub.&lt;init&gt;(Sub.java:3)
+	at Main.main(Main.java:2)</code></pre>
+						<img src="img/npe.jpg" style="height:377px;width:300px;" />
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Do/Don't</h2>
+						<h4>Constants</h4>
+						<p>Interfaces are used to define types, not values!</p>
+					</section>
+					<section>
+						<h2>Constants</h2>
+						<h4>Interface holds constants?</h4>
+						<pre><code>interface Version { static final String VERSION = "v2.4.3"; }</code></pre>
+						<pre><code>class Main implements Version {
+...
+System.out.println(String.format(MESSAGE, VERSION));
+...
+}</code></pre>
+						<h4>Constant be a constant!</h4>
+						<pre><code>final class Version { public static final String VERSION = "v2.4.3"; }</code></pre>
+						<pre><code>class Main {
+...
+System.out.println(String.format(MESSAGE, Version.VERSION));
+...
+}</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<h1>Thank you!</h1>
+					<h3>Now go and write something worth reading!</h3>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
