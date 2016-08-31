@@ -10,13 +10,8 @@ slidenumbers: true
 # Overview
 
 - Issue
-- Fork
-    - Branch
-        - Commit
-- Pull Request
-    - Review
-    - Deploy
-    - Merge
+- Fork -> Branch -> Commit
+- Pull Request: Review -> Deploy -> Merge
 
 ---
 
@@ -49,12 +44,18 @@ Defect / Story / Feature Request - all in one
 - Normal git operation
 - Check out fork, create git branch
 
+```bash
+~> git clone git@github.exinda.com:Tim-Steinbach/build-pipelines.git
+~> cd build-pipelines
+(master) ~> git checkout -b dev/bla
+```
+
 ---
 
 # Commit
 
 - Develop
-- Commit
+- Push to branch in fork
 
 ---
 
