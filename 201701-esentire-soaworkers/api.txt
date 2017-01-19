@@ -1,0 +1,160 @@
+\*\g Ruby API refactoring\s
+
+\*Making sense of Ruby\s
+
+---
+
+\*\gDay 1\s
+
+
+
+Never done Ruby
+--
+Most consecutive hours spent with a dynamically typed language: 2
+--
+Distinct dislike for "magical" code
+--
+Appreciation for language features from papers post-1960s (Interfaces? Parametric polymorphism?)
+
+---
+
+\*\gDay 5\s
+
+
+
+\r\*WHAT IS GOING ON?\s
+--
+\rNo joke, this works by accident!\s
+\_(or undocumented convention, which is the same thing)\s
+
+---
+
+\*\gDays 10-20\s
+
+
+
+\r\*Everything must go\s
+--
+Refactor "PolymorphicDecorator"
+--
+Create base factory
+--
+Separate decorators from framework code
+--
+Refactor first service to use refactored APIs
+
+---
+
+\*\gMerry Christmas\s
+
+
+
+\r\*Everything is broken\s
+(just ask Jessica!)
+--
+But why?
+--
+Well, there is no more bunny in the hat. The magic is gone.
+Some things still rely on magic
+
+---
+
+\*\rMore refactoring/fixing\s
+
+
+
+\gIt works!\s
+--
+Explicit dependencies
+Proper object wiring
+No more magic
+Health check for all workers (ask Haneef)
+Efficient decoration of objects
+\_Was nobody ever bothered by routinely \*triple(!!!)\s\_-decorated objects?\s
+
+---
+
+\*\rStats\s
+
+
+
+\_ssh://gerrit/soa-workers/services-workers\s
+(This is what we copy/paste for every worker)
+
+Before:
+```
+find . -name '*.rb' | wc -l
+47
+```
+
+After:
+```
+> find . -name '*.rb' | wc -l
+13
+```
+
+---
+
+\*\rDude, where is my code?\s
+
+
+
+```
+class ServicesFactory < Factory::FactoryInterface
+  def create(request = nil)
+    base = TaskHandler::Services.new
+    if (!request&.fetch(:options, {})&.has_key?(:mongodb))
+      mongoOptions = Decorators::ZookeeperDecorator.config({
+        :decorator => :mongodb,
+        :single_level => true
+      })
+    else
+      mongoOptions = {}
+    end
+
+    baseOptions = {
+      "MongoDB" => mongoOptions.merge(request&.fetch(:options, {})&.fetch(:mongodb, {}) || {})
+    }
+    decorations = [Decorators::UrlBuilder, Decorators::MongoDB]
+    return NodeUtils::Decorator.instance.decorate(base, decorations, baseOptions)
+  end
+
+  def handlers
+    return {
+      :services => -> options { create(options) }
+    }
+  end
+end
+```
+
+---
+
+\*\rRepos\s
+
+
+
+soa-workers/base-factory
+soa-workers/soa-workers-common-packages (decorators)
+soa-workers/soa-workers-utils
+
+soa-workers/services-worker
+
+---
+
+\*\rI just woke up, what happened?\s
+
+
+
+SOA workers are now much easier to write
+--
+No more copy/pasting of an entire repository
+--
+No more double/triple-decorating
+--
+No more magic
+--
+Explicit dependencies
+
+---
+
+\* Thank you \s
