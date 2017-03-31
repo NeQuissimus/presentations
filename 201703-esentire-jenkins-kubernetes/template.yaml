@@ -1,0 +1,48 @@
+kind: "Template"
+apiVersion: "v1"
+metadata:
+  name: "cds-duo"
+labels:
+  template: "cds-duo-template"
+objects:
+  - kind: "Deployment"
+    apiVersion: "extensions/v1beta1"
+    metadata:
+      name: "cds-duo"
+      labels:
+        role: "connector"
+    spec:
+      replicas: $((REPLICAS))
+      selector:
+        matchLabels:
+          name: "cds-duo"
+      template:
+        metadata:
+          labels:
+            name: "cds-duo"
+        spec:
+          containers:
+            - name: "cds-duo"
+              image: "$(DOCKER_IMAGE)"
+              env:
+              - name: "ZOOKEEPER_PORT_2181_TCP_ADDR"
+                valueFrom:
+                  configMapKeyRef:
+                    name: "cds-config"
+                    key: "hosts.zookeeper"
+              - name: "KAFKA_BROKERS"
+                valueFrom:
+                  configMapKeyRef:
+                    name: "cds-config"
+                    key: "hosts.kafka"
+parameters:
+  - name: "DOCKER_IMAGE"
+    description: "CDS Duo Docker image"
+    value: "registry.internal/cds/duo:latest"
+    required: false
+    parameterType: "string"
+  - name: "REPLICAS"
+    description: "Number of replicas of the service"
+    value: 1
+    required: false
+    parameterType: "int"
