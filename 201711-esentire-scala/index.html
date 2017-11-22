@@ -1,0 +1,489 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Scala at eSentire</title>
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/blood.css">
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+
+	<style>
+		.frame {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		img {
+			height: auto;
+		}
+
+		.headline {
+			color: #a23;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section data-transition="fade-in slide-out">
+				<!-- data-background-size="contain" data-background-image="./img/esentire-logo.png" -->
+				<div class="frame">
+					<img src="./img/scala-spiral.png" style="border:0px; width: 100px; height: 162px; background: none;" />
+					<span style="padding-left: 20px; padding-right: 20px;">@</span>
+					<img src="./img/esentire-logo.png" style="border: 0px; width: 300px; height: 100px; background: none;" />
+				</div>
+				<h6>
+					<br /> Helping developers help the company</h6>
+				<br />
+				<a href="https://twitter.com/Tim_Steinbach">@Tim_Steinbach</a> //\\
+				<a href="https://nequissimus.com/">nequissimus.com</a>
+			</section>
+			<section data-transition="fade-in slide-out" data-background-size="auto" data-background-image="./img/cables.jpg" data-background-position="top right">
+				<div>
+					<ul>
+						<li>Learn from the past</li>
+						<li>Improve quality</li>
+						<li>Improve documentation</li>
+						<li>Allow new hires to "jump right in"</li>
+					</ul>
+				</div>
+			</section>
+			<section>
+				<section data-transition="slide-in fade-out" data-background-size="500px" data-background-image="./img/letters.jpg" data-background-position="top 50px left 10px">
+					<span class="headline">Learn from the past</span>
+					<br />
+					<ul>
+						<li>Fragile communication protocols</li>
+						<li>Limited scalability</li>
+						<li>Premature optimization</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out" data-background-size="auto" data-background-image="./img/tdd.png" data-background-position="top 50px center">
+					<span class="headline">Improve quality</span>
+					<br />
+					<ul>
+						<li>"TDD"</li>
+						<li>Separate "test" tickets</li>
+						<li>Definition of "done"</li>
+						<li>Manual testing</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out" data-background-size="400px" data-background-image="./img/check-boxes-large.jpg"
+				 data-background-position="center left 10px">
+					<span class="headline">Improve documentation</span>
+					<br />
+					<ul>
+						<li>Document code</li>
+						<li>Document usage</li>
+						<li>Document purpose</li>
+						<li>Document interface</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">New hires</span>
+					<br />
+					<ul>
+						<li>Should
+							<strong>not</strong> have to read documentation for weeks</li>
+						<li>Should
+							<strong>not</strong> have to rely on picking brains</li>
+						<li>
+							<strong>Should</strong> be productive in their first week</li>
+						<li>
+							<strong>Should</strong> be guided by tools</li>
+					</ul>
+				</section>
+			</section>
+			<section data-transition="fade-in slide-out">
+				<span class="headline">How are we improving the situation?</span>
+				<br />
+				<ul>
+					<li>Concise documentation with necessary (non-googlable) information</li>
+					<li>Tool-assisted code conventions</li>
+					<li>Automatic code linting</li>
+					<li>Automatic vulnerability assessment</li>
+					<li>Required testing</li>
+				</ul>
+			</section>
+			<section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">eSentire SBT plugin</span>
+					<br /> Must be included in every build
+				</section>
+				<section data-transition="slide-in fade-out" data-background-size="400px" data-background-image="./img/killthebug.gif" data-background-position="bottom 10px right 150px">
+					<span class="headline">eSentire SBT plugin</span>
+					<br />
+					<ul>
+						<li>Code linting during compilation phase</li>
+						<li>Code formatting during compilation phase</li>
+						<li>Vulnerability scan for (transitive) dependencies available</li>
+						<li>Docker image generation</li>
+						<li>Cucumber</li>
+						<li>Code coverage</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">eSentire SBT plugin</span>
+					<br />
+					<ul>
+						<li>More efficient code reviews</li>
+						<li>No known vulnerabilities</li>
+						<li>Nicely formatted code</li>
+						<li>No dead code</li>
+						<li>Proper testing</li>
+					</ul>
+				</section>
+			</section>
+			<section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Clean builds</span>
+					<br />
+					<ul>
+						<li>Reproducible</li>
+						<li>No scripts</li>
+						<li>Integration test support
+							<a href="https://github.esentire.com/Scala-Common/scala-integration">framework</a>
+						</li>
+						<li>Archive artifacts (Docker Registry / Maven repository)</li>
+						<li>Archive documentation (Vulnerability report, test coverage report, Scaladoc, Swagger doc)</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out" data-background-size="400px" data-background-image="./img/roulette.jpg" data-background-position="top 10px right 50px">
+					<span class="headline">Reproducible (same output,
+						<strong>every</strong> time)</span>
+					<br />
+					<ul>
+						<li>Fixed dependency version</li>
+						<li>Release versions, no snapshots / "latest" Docker images</li>
+						<li>eSentire Base image updater (
+							<a href="https://jenkins.internal/job/Docker%20Base%20Images/job/Docker%20Image%20Updater/">Jenkins</a>/
+							<a href="https://github.esentire.com/eSentire/docker-base-image-update">GitHub</a>)
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Integration test support framework</span>
+					<br />
+					<ul>
+						<li>Based on Docker</li>
+						<li>Easily make dependent systems available</li>
+						<li>Ensures systems are up and running before starting tests</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Integration test support framework</span>
+					<br />
+					<pre><code data-trim data-noescape>
+						class FeatureSpec extends DockerIntegrationSuite
+							with ZookeeperDocker {
+							...
+						}
+					</code></pre>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Integration test support framework</span>
+					<br />
+					<pre><code data-trim data-noescape>
+						trait ZookeeperDocker extends DockerKit {
+							zookeeperPort = 2181
+							zookeeperVersion = "3.4.9"
+							zookeeperImage = ...
+							zookeeperContainer = DockerContainer(...)
+								.withPorts(...)
+								.withReadyChecker(
+									DockerReadyChecker.LogLineContains(
+										"- binding to port"
+									)
+								)
+							...
+						}
+					</code></pre>
+				</section>
+			</section>
+			<section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Schema definition</span>
+					<br />
+					<ul>
+						<li>Create small "library" that only defines the schema used by a service</li>
+						<li>Define the schema as tight as possible</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Sample data</span>
+					<br />
+					<pre><code data-trim data-noescape>
+					{
+						"id": "2c70d6ec-b49b-42bf-ac52-7ca68bd882cd",
+						"counter": 123,
+						"reference": "https://nequissimus.com/?foo"
+					}
+				</code></pre>
+				</section>
+				<section data-transition="slide-in fade-out" data-background-size="contain" data-background-image="./img/picard-facepalm.jpg"
+				 data-background-position="top 10px right 50px">
+					<span class="headline">Bad Interface</span>
+					<br />
+					<pre><code data-trim data-noescape>
+							{
+								"id": "2c70d6ec-b49b-42bf-ac52-7ca68bd882cd",
+								"counter": 123,
+								"reference": "https://nequissimus.com/?foo"
+							}
+						</code></pre>
+					<br />
+					<pre><code data-trim data-noescape>
+							{
+								"id": "string",
+								"counter": "integer",
+								"reference": "string"
+							}
+						</code></pre>
+					<br />
+					<pre><code data-trim data-noescape>
+							case class Data(id: String, counter: Long, reference: String)
+						</code></pre>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Is this valid?</span>
+					<br />
+					<pre><code data-trim data-noescape>
+							{
+								"id": "lala",
+								"counter": -12,
+								"reference": ":)"
+							}
+						</code></pre>
+					<br />
+					<br />Yes, but ...
+				</section>
+				<section data-transition="slide-in fade-out">
+					... should this be valid?
+					<br /> Of course not...
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Refined</span>
+					<br />
+					<pre><code data-trim data-noescape>
+							{
+								"id": "2c70d6ec-b49b-42bf-ac52-7ca68bd882cd", # UUID
+								"counter": 123, # Integer >= 0
+								"reference": "https://nequissimus.com/?foo" # URL
+							}
+						</code></pre>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Good Interface</span>
+					<br />
+					<pre><code data-trim data-noescape>
+							{
+								"id": "2c70d6ec-b49b-42bf-ac52-7ca68bd882cd",
+								"counter": 123,
+								"reference": "https://nequissimus.com/?foo"
+							}
+						</code></pre>
+					<pre><code data-trim data-noescape>
+							type ID = String Refined Uuid
+							type Counter = Long Refined NonNegative
+							type Address = String Refined Url
+
+							case class Data(id: ID, counter: Counter, reference: Address)
+						</code></pre>
+					<pre><code data-trim data-noescape>
+							// d1 compiles, d2 does not
+							> val d1 = Data(
+								"2c70d6ec-b49b-42bf-ac52-7ca68bd882cd",
+								123L,
+								"https://nequissimus.com/?foo")
+
+							> val d2 = Data("foo", 123L, "https://nequissimus.com/?foo")
+							Uuid predicate failed: Invalid UUID string: foo
+
+							Compilation Failed
+						</code></pre>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Throw (runtime) data at it</span>
+					<br />
+					<pre><code data-trim data-noescape>
+							> val json = """{"id": "2c70d6ec-b49b-42bf-ac52-7ca68bd882cd",
+								"counter": 123,
+								"reference": "https://nequissimus.com/?foo"}"""
+							> decode[Data](json)
+
+							res2: Either[io.circe.Error, Data] =
+							Right(Data(2c70d6ec-b49b-42bf-ac52-7ca68bd882cd, 123,
+								https://nequissimus.com/?foo))
+						</code></pre>
+					<pre><code data-trim data-noescape>
+							> val json2 = """{"id": "2c70d6ec-b49b-42bf-ac52-7ca68bd882cd",
+								"counter": -12,
+								"reference": "https://nequissimus.com/?foo"}"""
+							> decode[Data](json2)
+
+							res3: Either[io.circe.Error, Data] =
+							Left(DecodingFailure(
+							Predicate (-12 < 0) did not fail., List(DownField(counter))
+							))
+						</code></pre>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">The best part(s)</span>
+					<br />
+					<ul>
+						<li>Refined for type refinement</li>
+						<li>Lots of compile type "magic"</li>
+						<li>More readable code</li>
+						<li>No way to forget an "if"</li>
+						<li>Circe (JSON serialization) has a module to support refined type</li>
+						<li>We already use circe in es-http</li>
+					</ul>
+				</section>
+			</section>
+			<section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">es-http</span>
+					<br />
+					<ul>
+						<li>HTTP framework abstraction</li>
+						<li>Pluggable HTTP libraries</li>
+						<li>Abstraction over sync/async</li>
+						<li>Very easy to use</li>
+						<li>Swagger documentation generated from code</li>
+						<li>No exceptions, all errors explicit</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">es-http built-ins</span>
+					<br />
+					<ul>
+						<li>Akka HTTP by default</li>
+						<li>JWT verification</li>
+						<li>HTTP with or without TLS</li>
+						<li>Every service has a /ping route</li>
+						<li>Automatic conversion of request body into case class</li>
+						<li>Automatic conversion of response body into JSON</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">No need to deal with low-level code
+						<br />Just write the service!</span>
+					<br />
+					<pre><code data-trim data-noescape>
+						abstract class Service[F[_]: Monad] {
+							def bindings: F[Set[Protocol]]
+							def routes: F[Set[Route[_, _]]]
+							def pingHandler: F[Request[Unit] => Response[Unit]]
+
+							def run: F[Unit]
+						}
+					</code></pre>
+					<pre><code data-trim data-noescape>
+// monix.eval.Task is our async monad
+
+val service = AkkaHttp.MonixService(
+	bindings, // Interface and port
+	routes, // Endpoints and handlers
+	Service.defaultPingHandler // /ping
+)
+service.run
+					</code></pre>
+				</section>
+			</section>
+			<section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Docker / Kubernetes</span>
+					<br />
+					<ul>
+						<li>Generate docker image without Dockerfile</li>
+						<li>Generate Kubernetes manifest without YAML</li>
+					</ul>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Docker</span>
+					<br />
+					<pre><code data-trim data-noescape>
+											enablePlugins(AshScriptPlugin)
+											enablePlugins(DockerPlugin)
+
+											packageName in Docker := "registry.internal/dpa/service"
+											maintainer in Docker := "Tim Steinbach"
+											dockerBaseImage := "openjdk:8-jre-alpine"
+											version in Docker := sys.env.get("BUILD_NUMBER")
+											dockerUpdateLatest := sys.env.contains("BUILD_NUMBER")
+
+											dockerCommands ++= Seq(
+												Cmd("LABEL", s"BUILD=${(version in Docker).value}"),
+												Cmd("LABEL", s"GIT_COMMIT=${sys.env.get("GIT_COMMIT")}")
+											)
+											</code></pre>
+					<br />
+					<pre><code data-trim data-noescape>
+												sbt docker:publish
+											</code></pre>
+				</section>
+				<section data-transition="slide-in fade-out">
+					<span class="headline">Kubernetes</span>
+					<br />
+					<pre><code data-trim data-noescape>
+						(applicationName in Deployment) := packageName.value
+						(containerImage in Deployment) := (packageName in Docker).value
+							+ ":" + (version in Docker).value
+						(namespace in Deployment) := "dpa"
+						(containerPort in Deployment) := 8080
+						(port in Deployment) := 8080
+						(nodePort in Deployment) := 31701
+						(environmentFromSecret in Deployment) := Map(
+							"KEYSTORE_PATH" -> (packageName.value, "keystore.path"),
+							"KEYSTORE_PW" -> (packageName.value, "keystore.password"),
+							"JWT_SECRET_KEY" -> (packageName.value, "jwt.key"),
+							"JWT_APP" -> (packageName.value, "jwt.app"))
+						(volumes in Deployment) := Map("keystore" ->
+							("keystore", Paths.get("/tmp/keystore"), "keystore"))
+					</code></pre>
+				</section>
+			</section>
+			<section data-transition="fade-in slide-out">
+				<span class="headline">TL;DR (or listen)</span>
+				<br />
+				<ul>
+					<li>Automated quality</li>
+					<li>Bad data/state impossible</li>
+					<li>Errors explicit</li>
+					<li>Simple = fast + maintainable</li>
+					<li>Non-Googlable information needs to be documented (concisely)</li>
+					<li>Testing is part of development(!!!)</li>
+				</ul>
+			</section>
+			<section data-background-image="./img/thx.jpg">
+			</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		Reveal.initialize({
+			dependencies: [
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>
