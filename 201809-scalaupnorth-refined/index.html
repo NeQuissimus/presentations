@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Refined JSON</title>
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/webslides.css">
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/fontawesome.min.css">
+    <link rel="stylesheet" href="static/js/styles/github.css">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#333333">
+    <script src="static/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <main role="main">
+      <article id="webslides" class="vertical">
+        <section>
+          <span class="background" style="background-image:url('static/images/2018-08-07-122642_1918x1062_scrot.png'); opacity:0.15"></span>
+          <div class="wrap">
+            <div class="grid vertical-align">
+              <div class="column"></div>
+              <div class="column">
+                <h1><strong>Refined JSON</strong></h1>
+                <hr />
+                <h2>Making sense of stringly-typed data</h2>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><img src="static/images/628342.jpeg" style="border-radius: 25px;"/></div>
+              <div class="column" style="font-size: 64px"><ul>
+                <li><i class="fa-user fa"></i>&nbsp;Tim Steinbach</li>
+                <li>&nbsp;</li>
+                <li><i class="fa-user-tag fa"></i>&nbsp;Senior Software Developer</li>
+                <li><i class="fa-users fa"></i>&nbsp;Advanced Threat Analytics</li>
+                <li><i class="fa-building fa"></i>&nbsp;&nbsp;eSentire Inc, Cambridge, ON</li>
+                <li>&nbsp;</li>
+                <li><i class="fa-twitter-square fab"></i>&nbsp;@Tim_Steinbach</li>
+                <li><i class="fa-github-square fab"></i>&nbsp;NeQuissimus</li>
+              </ul></div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><i class="fa-angry far" style="font-size: 256px; text-align: right"></i></div>
+              <div class="column">
+                <pre><code class="json">
+{
+  "ip": "10.0.0.1",
+  "timestamp": 1432934640
+}
+                </code></pre>
+                <pre><code class="scala">
+final case class Foo(ip: String, timestamp: Long)
+                </code></pre>
+              </div>
+            </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><i class="fa-frown far" style="font-size: 256px; text-align: right"></i></div>
+              <div class="column">
+                <pre><code class="json">
+{
+  "ip": "10.0.0.1",
+  "timestamp": 1432934640
+}
+                </code></pre>
+                <pre><code class="scala">
+final case class Foo private(ip: String, timestamp: Long)
+
+object Foo {
+  private[this] def isValidIp(s: String): Boolean = ???
+
+  def apply(ip: String, timestamp: Long): Option[Foo] = (ip, timestamp) match {
+    case (i, t) if isValidIp(i) && t >= 0L => Some(new Foo(i, t))
+    case _ => None
+  }
+}
+                </code></pre>
+              </div>
+            </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><i class="fa-lightbulb far" style="font-size: 256px; text-align: right"></i></div>
+              <div class="column">
+                <h1><strong>refined</strong></h1>
+                <hr />
+                <h2><i class="fa-github fab"></i>&nbsp;fthomas/refined</h2>
+                <h2><em><strong>refined</strong> is a Scala library for refining types with type-level predicates which constrain the set of values described by the refined type</em></h2>
+              </div>
+            </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><i class="fa-smile far" style="font-size: 256px; text-align: right"></i></div>
+              <div class="column">
+                <pre><code class="json">
+{
+  "ip": "10.0.0.1",
+  "timestamp": 1432934640
+}
+                </code></pre>
+                <pre><code class="scala">
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.boolean._
+import eu.timepit.refined.string._
+import eu.timepit.refined.types.numeric.NonNegLong
+
+type IpAddress = String Refined (IPv4 Or IPv6)
+type Timestamp = NonNegLong
+                </pre></code>
+                <pre><code class="scala">
+final case class Foo(ip: IpAddress, timestamp: Timestamp)
+                </code></pre>
+              </div>
+            </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><i class="fa-grin far" style="font-size: 256px; text-align: right"></i></div>
+              <div class="column">
+                <pre><code class="scala">
+val ts1: Timestamp = -42L // Compile error: Predicate (-42 < 0) did not fail
+val ts2: Timestamp = 1432934640L
+val ip1: IpAddress = "Hello World" // Compile error: Both predicates of (Hello World is a valid IPv4 || Hello World is a valid IPv6) failed. [...]
+val ip2: IpAddress = "127.0.0.1"
+val ip3: IpAddress = "::1"
+                </code></pre>
+              </div>
+            </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><i class="fa-grin-squint far" style="font-size: 256px; text-align: right"></i></div>
+              <div class="column">
+                <pre><code class="scala">
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.boolean._
+import eu.timepit.refined.string._
+import eu.timepit.refined.types.numeric.NonNegLong
+
+type IpAddress = String Refined (IPv4 Or IPv6)
+type Timestamp = NonNegLong
+                </pre></code>
+                <pre><code class="scala">
+import eu.timepit.refined.api.RefinedTypeOps
+
+object IpAddress extends RefinedTypeOps[IpAddress, String]
+                </code></pre>
+                <pre><code class="scala">
+IpAddress.from _ // String => Either[String, IpAddress]
+NonNegLong.from _ // Long => Either[String, NonNegLong]
+                </code></pre>
+              </div>
+            </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><i class="fa-grin-hearts far" style="font-size: 256px; text-align: right"></i></div>
+              <div class="column">
+                <pre><code class="scala">
+import io.circe.generic.auto._
+import io.circe.parser.decode
+import io.circe.refined._
+
+decode[Foo]("""{"timestamp":123456789,"ip":"127.0.0.1"}""")
+// Either[io.circe.Error, Foo] = Right(Foo(127.0.0.1, 123456789))
+
+decode[Foo]("""{"timestamp":123456789,"ip":"hi!"}""")
+// Either[io.circe.Error, Foo] = Left(DecodingFailure(Both predicates [...], List(DownField(ip))))
+                </code></pre>
+              </div>
+            </div>
+        </section>
+        <section>
+          <div class="wrap content-center">
+            <h1><strong><i class="fa-thumbs-up fas"></i>&nbsp;Thank you</strong></h1>
+            <h3><strong><i class="fa-question-circle fas"></i>&nbsp;Questions?</strong></h3>
+          </div>
+        </section>
+      </article>
+    </main>
+    <script src="static/js/webslides.js"></script>
+    <script>
+      window.ws = new WebSlides();
+    </script>
+  </body>
+</html>
