@@ -11,6 +11,9 @@
     <meta name="theme-color" content="#333333">
     <script src="static/js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+    <style>
+    code { font-size: 150%; line-height: 120%; }
+    </style>
   </head>
   <body>
     <main role="main">
@@ -79,10 +82,11 @@ final case class Foo private(ip: String, timestamp: Long)
 object Foo {
   private[this] def isValidIp(s: String): Boolean = ???
 
-  def apply(ip: String, timestamp: Long): Option[Foo] = (ip, timestamp) match {
-    case (i, t) if isValidIp(i) && t >= 0L => Some(new Foo(i, t))
-    case _ => None
-  }
+  def apply(ip: String, timestamp: Long): Option[Foo] =
+    (ip, timestamp) match {
+      case (i, t) if isValidIp(i) && t >= 0L => Some(new Foo(i, t))
+      case _ => None
+    }
 }
                 </code></pre>
               </div>
@@ -132,9 +136,13 @@ final case class Foo(ip: IpAddress, timestamp: Timestamp)
               <div class="column"><i class="fa-grin far" style="font-size: 256px; text-align: right"></i></div>
               <div class="column">
                 <pre><code class="scala">
-val ts1: Timestamp = -42L // Compile error: Predicate (-42 < 0) did not fail
+import eu.timepit.refined.auto._
+
+val ts1: Timestamp = -42L
+// Compile error: Predicate (-42 < 0) did not fail
 val ts2: Timestamp = 1432934640L
-val ip1: IpAddress = "Hello World" // Compile error: Both predicates of (Hello World is a valid IPv4 || Hello World is a valid IPv6) failed. [...]
+val ip1: IpAddress = "Hello World"
+// Compile error: Both predicates of (Hello World is a valid IPv4 || Hello World is a valid IPv6) failed. [...]
 val ip2: IpAddress = "127.0.0.1"
 val ip3: IpAddress = "::1"
                 </code></pre>
