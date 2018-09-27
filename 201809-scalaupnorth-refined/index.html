@@ -195,6 +195,24 @@ decode[Foo]("""{"timestamp":123456789,"ip":"hi!"}""")
             </div>
         </section>
         <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><i class="fa-smile-wink far" style="font-size: 256px; text-align: right"></i></div>
+              <div class="column">
+                <pre><code class="scala">
+// Refined types in configuration
+import eu.timepit.refined.pureconfig._
+
+// Test with inhabitants of refined types
+import eu.timepit.refined.scalacheck._
+
+// Refined types in databases
+import doobie.refined.implicits._
+                </code></pre>
+              </div>
+            </div>
+        </section>
+        <section>
           <div class="wrap content-center">
             <h1><strong><i class="fa-thumbs-up fas"></i>&nbsp;Thank you</strong></h1>
             <h3><strong><i class="fa-question-circle fas"></i>&nbsp;Questions?</strong></h3>
