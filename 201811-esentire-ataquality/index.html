@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ATA Development Process</title>
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/webslides.css">
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/js/styles/github.css">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#333333">
+    <script src="static/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <style>
+    body { font-size: 300%; line-height: 250%; }
+    code { font-size: 150%; line-height: 120%; }
+    footer { font-size: 70%; line-height: 100%; }
+    li { line-height: 150%; padding-left: 1.3em; }
+    li:before { content: "\f069"; font-family: FontAwesome; display: inline-block; margin-left: -1.3em; width: 1.3em; }
+    ul { list-style: none; padding: 0; }
+    </style>
+  </head>
+  <body>
+    <main role="main">
+      <article id="webslides" class="vertical">
+        <section>
+          <span class="background" style="background-image:url('static/images/2018-08-07-122642_1918x1062_scrot.png'); opacity:0.15"></span>
+          <div class="wrap">
+            <div class="grid vertical-align">
+              <div class="column"></div>
+              <div class="column">
+                <h1><strong>ATA Development Process</strong></h1>
+                <hr />
+                <h2>Fast-paced, high-quality software development</h2>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-glasses fas"></i>&nbsp;Overview</h1></div>
+              <div class="column content-right">
+                <ul>
+                  <li>FP Scala</li>
+                  <li>SBT build plugin</li>
+                  <li>Docker / Kubernetes support</li>
+                  <li>Integration test framework</li>
+                  <li>CI / CD</li>
+                  <li>Automatic end-to-end tests</li>
+                  <li>Kafka Streams</li>
+                  <li>Refined schemas</li>
+                </ul>
+              </div>
+            </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-lambda fas"></i>&nbsp;FP Scala</h1></div>
+              <div class="column content-right">
+                <ul>
+                  <li>Functional Programming</li>
+                  <li>"Scalazzi" subset of Scala<sup>[1]</sup></li>
+                  <li>Scalaz - functional data structures, type classes</li>
+                  <li>ZIO - effect type (I/O bifunctor)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer class="bg-white">
+            <div class="wrap">
+              1 <a href="http://yowconference.com.au/slides/yowwest2014/Morris-ParametricityTypesDocumentationCodeReadability.pdf">http://yowconference.com.au/slides/yowwest2014/Morris-ParametricityTypesDocumentationCodeReadability.pdf</a>
+            </div>
+          </footer>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid">
+              <div class="column"><h1><i class="fa-traffic-cone fas"></i>&nbsp;SBT build plugin</h1></div>
+              <div class="column content-right">
+                <ul>
+                  <li>Code formatting</li>
+                  <li>Linting</li>
+                  <li>100% test coverage</li>
+                  <li>Artifact publishing setup</li>
+                  <li>List of recommended libraries</li>
+                </ul>
+              </div>
+              <div class="column">
+                <pre><code class="bash">
+λ sbt format
+λ sbt validate
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid">
+              <div class="column"><h1><i class="fa-docker fab"></i>&nbsp;Docker / Kubernetes support</h1></div>
+              <div class="column content-right">
+                <ul>
+                  <li>SBT plugin</li>
+                  <li>Information from build definition</li>
+                  <li>Create Docker images</li>
+                  <li>Generate Kubernetes YAML</li>
+                </ul>
+              </div>
+              <div class="column">
+                <pre><code class="bash">
+λ sbt docker:publish
+λ sbt manifest
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid">
+              <div class="column"><h1><i class="fa-clipboard-list-check fas"></i>&nbsp;Integration test framework</h1></div>
+              <div class="column content-right">
+                <ul>
+                  <li>Docker-based dependencies
+                    <ul>
+                      <li>Redis</li>
+                      <li>sshd</li>
+                    </ul>
+                  </li>
+                  <li>In-memory dependencies
+                    <ul>
+                      <li>Kafka</li>
+                      <li>OkHttp MockWebServer</li>
+                      <li>Yandex Embedded PostgreSQL</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              <div class="column">
+                <pre><code class="scala">
+object AppSpec
+  extends IntegrationSuite
+  with InMemoryKafka
+  with InMemoryPostgres {
+
+  unsafeRun(start)
+
+  val kafkaHost = ...
+  val kafkaPort = ...
+  val postgresUrl = ...
+  val postgresUser = ...
+  val postgresPassword = ...
+}
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-sync-alt fas"></i>&nbsp;CI / CD</h1></div>
+              <div class="column content-right">
+                <ul>
+                  <li>Build driven by <strong>Jenkinsfile</strong></li>
+                  <li>Docker images scanned for vulnerabilities<sup>[2]</sup></li>
+                  <li><strong>master</strong> branch deployments into Development Kubernetes</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer class="bg-white">
+            <div class="wrap">
+              2 <a href="https://github.com/coreos/clair">https://github.com/coreos/clair</a>
+            </div>
+          </footer>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-user-slash fas"></i>&nbsp;Automatic end-to-end tests</h1></div>
+              <div class="column content-right">
+                <ul>
+                  <li>Kubernetes CronJob, every 4 hours</li>
+                  <li>Development and UAT</li>
+                  <li>Injects Kafka messages into all topics</li>
+                  <li>Verifies pipeline outputs (Kafka, databases)</li>
+                  <li>Results into HipChat</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-stream fas"></i>&nbsp;Kafka Streams</h1></div>
+              <div class="column content-right">
+                <ul>
+                  <li>Easy-to-use</li>
+                  <li>High throughput</li>
+                  <li>Idiomatic Scala API</li>
+                  <li>Automatic&trade; parallelism</li>
+                  <li>Easy to scale processors</li>
+                  <li>Effectively-once delivery</li>
+                  <li>Topics as tables for lookups</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid">
+              <div class="column"><h1><i class="fa-user-graduate fas"></i>&nbsp;Refined schemas</h1></div>
+              <div class="column content-right">
+                <ul>
+                  <li>Tight type definitions</li>
+                  <li>Minimize testing, errors, value space</li>
+                  <li>Maximize information, coverage, confidence</li>
+                </ul>
+              </div>
+            </div>
+            <div class="wrap">
+              <div class="column">
+                <pre><code class="scala">
+/*
+{
+  "id": "60d92e00-2d65-4454-a997-9af6c38f70e2",
+  "sourceIp": "73.45.1.12",
+  "raw": "The user clicked the Word Macro from the Nigerian Prince :("
+}
+*/
+final case class RawEvent(id: UUID, sourceIp: RawEvent.SourceIp, raw: NonEmptyString)
+
+object RawEvent {
+  type SourceIp = String Refined (IPv4 Or IPv6)
+}
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap content-center">
+            <h1><strong><i class="fa-thumbs-up fas"></i>&nbsp;Thank you</strong></h1>
+            <br />
+            <h3><strong><i class="fa-question-circle fas"></i>&nbsp;Questions?</strong></h3>
+            <h3><strong><i class="fa-code fas"></i>&nbsp;Want to see code?</strong></h3>
+          </div>
+        </section>
+      </article>
+    </main>
+    <script src="static/js/webslides.js"></script>
+    <script>
+      window.ws = new WebSlides();
+    </script>
+  </body>
+</html>
