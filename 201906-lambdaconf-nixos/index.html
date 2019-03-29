@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sane System Management with NixOS</title>
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/webslides.css">
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/all.min.css">
+    <link rel="stylesheet" href="static/js/styles/github.css">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#333333">
+    <script src="static/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <style>
+    body { font-size: 300%; line-height: 250%; }
+    code { font-size: 150%; line-height: 120%; }
+    footer { font-size: 70%; line-height: 100%; }
+    li { line-height: 150%; padding-left: 1.3em; }
+    ul.fancy li:before { content: "\f069"; font-family: FontAwesome; display: inline-block; margin-left: -1.3em; width: 1.3em; }
+    ul.sad li:before { content: "\2639";  font-family: FontAwesome; font-size: 150%; display: inline-block; margin-left: -1.3em; width: 1.3em; }
+    ul.happy li:before { content: "\f118"; font-family: FontAwesome; font-size: 150%; display: inline-block; margin-left: -1.3em; width: 1.3em; }
+    ul { list-style: none; padding: 0; }
+    </style>
+  </head>
+  <body>
+    <main role="main">
+      <article id="webslides" class="vertical">
+        <section>
+          <span class="background" style="background-image:url('static/images/2019-03-28-134710_1916x1060_scrot.png'); opacity:0.1;"></span>
+          <div class="wrap">
+            <div class="grid vertical-align">
+              <div class="column"><img src="static/images/nix-snowflake.svg" style="height: 500px; width: 500px; margin-left: 100px;" /></div>
+              <div class="column">
+                <h1><strong>Sane System Management with NixOS</strong></h1>
+                <hr />
+                <h2>I Do Declare!</h2>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-glasses fas"></i>&nbsp;Overview</h1></div>
+              <div class="column content-right">
+                <ul class="fancy">
+                  <li>$(whoami)</li>
+                  <li>State of the System</li>
+                    <!-- Trust the package -->
+                    <!-- Package updates (error half-way through) -->
+                    <!-- Globally shared libraries / dynamic dependencies -->
+                    <!-- System updates (kernel panic upon reboot) -->
+                    <!-- System reinstall (bash script? Gist?) -->
+                    <!-- Configuration in 100s of files -->
+                  <li>What if?</li>
+                    <!-- Built from source -->
+                    <!-- Packages reproducible -->
+                    <!-- Packages bring their dependencies -->
+                    <!-- Updates not in-place -->
+                    <!-- Rollback to known working state -->
+                    <!-- One configuration -->
+                    <!-- System can be rebuilt from single config file -->
+                  <li>Nix</li>
+                    <!-- Nix is a powerful package manager for Linux and other Unix systems that makes package management reliable and reproducible. It provides atomic upgrades and rollbacks, side-by-side installation of multiple versions of a package, multi-user package management and easy setup of build environments -->
+                  <li>Nixpkgs</li>
+                    <!-- github.com/nixos/nixpkgs -->
+                    <!-- Want new package? PR! Want an update? PR! -->
+                  <li>NixOS</li>
+                    <!-- Linux distribution built with Nix/Nixpkgs -->
+                    <!-- https://r13y.com/ (image in static/) -->
+                    <!-- configuration.nix -->
+                  <li>NixOps</li>
+                    <!-- NixOS + Terraform -->
+                  <li>Encore: Python</li>
+                  <li>Encore: Haskell</li>
+                </ul>
+              </div>
+            </div>
+        </section>
+        <section class="bg-trans-dark">
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><img src="static/images/628342.jpeg" style="border-radius: 25px;"/></div>
+              <div class="column" style="font-size: 64px"><ul>
+                <li><i class="fa-user fa"></i>&nbsp;Tim Steinbach</li>
+                <li>&nbsp;</li>
+                <li><i class="fa-user-tag fa"></i>&nbsp;Senior Software Developer</li>
+                <li><i class="fa-users fa"></i>&nbsp;Advanced Threat Analytics</li>
+                <li><i class="fa-building fa"></i>&nbsp;&nbsp;eSentire Inc, Ontario, Canada</li>
+                <li>&nbsp;</li>
+                <li><i class="fa-twitter-square fab"></i>&nbsp;@Tim_Steinbach</li>
+                <li><i class="fa-github-square fab"></i>&nbsp;NeQuissimus</li>
+              </ul></div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>State Of The System</span></header>
+          <center><h1>Windows / macOS</h1></center>
+          <div class="wrap content-center">
+            <div class="grid ms">
+              <div class="column">
+                <ul class="flexblock specs">
+                  <li>Trust the packages</li>
+                  <li>Largely closed-source</li>
+                  <li>In-place updates</li>
+                  <li>Global libraries</li>
+                  <li>Manual install/setup</li>
+                </ul>
+              </div>
+              <div class="column">
+                <h1 style="font-size: 128px;"><i class="fa-windows fab"></i></h1>
+                <h1 style="font-size: 128px;"><i class="fa-apple fab"></i></h1>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>State Of The System</span></header>
+          <center><h1>Linux</h1></center>
+          <div class="wrap content-center">
+            <div class="grid sm">
+              <div class="column">
+                <h1 style="font-size: 128px;"><i class="fa-linux fab"></i></h1>
+              </div>
+              <div class="column">
+                <ul class="flexblock specs">
+                  <li>In-place updates</li>
+                  <li>Global libraries</li>
+                  <li>Manual install/setup</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>State Of The System</span></header>
+          <center><h1>Configuration</h1></center>
+          <div class="wrap">
+            <div class="grid ms">
+              <div class="column">
+                <ul class="sad">
+                  <li>Registry</li>
+                  <li>C:\Users\<strong>USER</strong>\AppData\Local</li>
+                  <li>C:\Users\<strong>USER</strong>\AppData\LocalLow</li>
+                  <li>C:\Users\<strong>USER</strong>\AppData\Roaming</li>
+                  <li>C:\Users\<strong>USER</strong>\Documents</li>
+                  <li>C:\Program Files</li>
+                  <li>C:\ProgramData (== C:\Users\All Users\Application Data)</li>
+                </ul>
+              </div>
+              <div class="column">
+                <h1 style="font-size: 128px;"><i class="fa-windows fab"></i></h1>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>State Of The System</span></header>
+          <center><h1>Configuration</h1></center>
+          <div class="wrap">
+            <div class="grid ms">
+              <div class="column">
+                <ul class="sad">
+                  <li>/Library/Application Support</li>
+                  <li>~/Library/Application Support</li>
+                  <li>~/Library/Preferences</li>
+                </ul>
+              </div>
+              <div class="column">
+                <h1 style="font-size: 128px;"><i class="fa-apple fab"></i></h1>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>State Of The System</span></header>
+          <center><h1>Configuration</h1></center>
+          <div class="wrap">
+            <div class="grid ms">
+              <div class="column">
+                <ul class="sad">
+                  <li>/etc</li>
+                  <li>/usr/share</li>
+                  <li>/opt</li>
+                  <li>${HOME}</li>
+                  <li>${XDG_CONFIG_HOME}</li>
+                  <li>${XDG_CACHE_HOME}</li>
+                  <li>${XDG_DATA_HOME}</li>
+                </ul>
+              </div>
+              <div class="column">
+                <h1 style="font-size: 128px;"><i class="fa-linux fab"></i></h1>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>State Of The System</span></header>
+          <center><h1>Configuration</h1></center>
+          <div class="wrap">
+            <div class="grid ms">
+              <div class="column">
+                <ul class="sad">
+                  <li>XML?</li>
+                  <li>JSON?</li>
+                  <li>SQLite?</li>
+                  <li>plist?</li>
+                  <li>Key-Value-Pair?</li>
+                  <li>Binary blob?</li>
+                </ul>
+              </div>
+              <div class="column">
+                <h1 style="font-size: 128px;"><i class="fa-linux fab"></i><br /><i class="fa-apple fab"></i><br /><i class="fa-windows fab"></i></h1>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>State Of The System</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-ubuntu fab"></i>&nbsp;Install<sup>*</sup></h1></div>
+              <div class="column content-right">
+                <ul class="fancy">
+                  <li>Overview</li>
+                  <li>Requirements</li>
+                  <li>Boot from USB flash drive</li>
+                  <li>Prepare to install Ubuntu</li>
+                  <li>Allocate drive space</li>
+                  <li>Begin installation</li>
+                  <li>Select your location</li>
+                  <li>Login details</li>
+                  <li>Background installation</li>
+                  <li>Installation complete</li>
+                </ul>
+                <br /><span><i class="fa-plus fas"></i>&nbsp;Install packages, configure environment, download favourite wallpaper, ...</span>
+              </div>
+            </div>
+          </div>
+          <footer>* https://tutorials.ubuntu.com/tutorial/tutorial-install-ubuntu-desktop</footer>
+        </section>
+        <section>
+          <header><span>What if?</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-head-side-brain fas"></i>&nbsp;What if?</h1></div>
+              <div class="column content-right">
+                <ul class="fancy">
+                  <li>All configuration in one place</li>
+                  <li>Applications bring the dependencies they need</li>
+                  <li>(Re-)Installation within minutes</li>
+                  <li>Software built from source, with binary cache</li>
+                  <li>Bitwise reproducibility of the entire system</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="slide-top">
+          <header><span>What if?</span></header>
+          <center><h1>Configuration</h1></center><br />
+          <div class="wrap" style="font-size: 200%;">
+            <div class="grid ms">
+              <div class="column">
+                <ul class="happy">
+                  <li>One single file</li>
+                  <li>Configure kernel</li>
+                  <li>Configure services</li>
+                  <li>Configure updates</li>
+                </ul>
+              </div>
+              <div class="column">
+                <h1 style="font-size: 128px;"><i class="fa-head-side-brain fas"></i></h1>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="slide-top">
+          <header><span>What if?</span></header>
+          <center><h1>Dependencies</h1></center><br />
+          <div class="wrap" style="font-size: 200%;">
+            <div class="grid ms">
+              <div class="column">
+                <ul class="happy">
+                  <li>No dynamic linking</li>
+                  <li>Versions known to work</li>
+                  <li>Share but do not overshare</li>
+                </ul>
+              </div>
+              <div class="column">
+                <h1 style="font-size: 128px;"><i class="fa-head-side-brain fas"></i></h1>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;Nix</h1></div>
+              <div class="column content-right">
+                <span><em>Nix is a package manager that makes package management reliable and reproducible*</em></span>
+                <ul class="fancy">
+                  <li>Atomic upgrades</li>
+                  <li>Atomic rollbacks</li>
+                  <li>Multi-user package management</li>
+                  <li>Side-by-side installation of different versions of the same package</li>
+                  <li>Runs on any Linux, OSX, Windows
+                </ul><br />
+              </div>
+            </div>
+          </div>
+          <footer>* Paraphrasing https://nixos.org/nix/</footer>
+        </section>
+        <section>
+          <header><span>Nix</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;Nix</h1></div>
+              <div class="column content-right">
+                <pre><code class="bash">
+~ λ nix-env -iA nixos.haskell.compiler.ghc822
+~ λ readlink -e $(type -p ghci)
+/nix/store/ff35xk44xaqlfdbigafls4683rp6kfh1-ghc-8.2.2/bin/ghci-8.2.2
+
+~ λ nix-env -iA nixos.haskell.compiler.ghc864
+~ λ readlink -e $(type -p ghci)
+/nix/store/8vq01xmxlp9wxzilkw85rb621ag7nwmd-ghc-8.6.4/bin/ghci-8.6.4
+
+~ λ type -p ghci
+ghci is /home/nequi/.nix-profile/bin/ghci
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;Nix</h1></div>
+              <div class="column content-right">
+                <pre><code class="bash">
+~ λ nix-env -q
+ghc-8.6.4
+openjdk-11.0.2-b9-headless
+unzip-6.0
+
+~ λ ls -1 /home/nequi/.nix-profile/bin/java
+/home/nequi/.nix-profile/bin/java -> /nix/store/wf5msw8an2k1r97k4zxiblr7dlw5y394-openjdk-11.0.2-b9/bin/java
+
+~ λ nix-env --rollback
+switching from generation 138 to 137
+
+~ λ nix-env -q
+ghc-8.6.4
+openjdk-8u212-ga
+unzip-6.0
+
+~ λ ls -1 /home/nequi/.nix-profile/bin/java
+/home/nequi/.nix-profile/bin/java -> /nix/store/lfiic1z2sws6b4z37vhy1iyjw0cg5xma-openjdk-8u212-ga/bin/java
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;<strike>BYOD</strike><sup>*</sup></h1></div>
+              <div class="column content-right">
+                <pre><code class="bash">
+~ λ ldd $(readlink -e $(type -p java)) | head -5
+  linux-vdso.so.1 (0x00007ffd08301000)
+  libpthread.so.0 => /nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27/lib/libpthread.so.0 (0x0000774c134c2000)
+  libz.so.1 => /nix/store/iiymx8j7nlar3gc23lfkcscvr61fng8s-zlib-1.2.11/lib/libz.so.1 (0x0000774c134a3000)
+  libjli.so => /nix/store/06qhys2248snhhmi9mqgbrrbq4qqpyk0-openjdk-8u212-ga-jre/lib/openjdk/jre/lib/amd64/jli/libjli.so (0x0000774c1348c000)
+  libdl.so.2 => /nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27/lib/libdl.so.2 (0x0000774c13487000)
+                </code></pre>
+              </div>
+            </div>
+          </div>
+          <footer>* Bring Your Own Dependencies</footer>
+        </section>
+        <section>
+          <header><span>Nix</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;<strike>BYOD</strike><sup>*</sup></h1></div>
+              <div class="column content-right">
+                <pre><code class="bash">
+~ λ nix-store -q --tree $(readlink -e $(type -p ghci)) | head -10
+/nix/store/8vq01xmxlp9wxzilkw85rb621ag7nwmd-ghc-8.6.4
++---/nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27
+|   +---/nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27 [...]
++---/nix/store/0y7jmqnj48ikjh37n3dl9kqw9hnn68nq-binutils-2.31.1
+|   +---/nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27 [...]
+|   +---/nix/store/iiymx8j7nlar3gc23lfkcscvr61fng8s-zlib-1.2.11
+|   |   +---/nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27 [...]
+|   +---/nix/store/0y7jmqnj48ikjh37n3dl9kqw9hnn68nq-binutils-2.31.1 [...]
++---/nix/store/7mrq5v4nnqfkv1ka7a0kdw9mzvqs5w3c-gmp-6.1.2
+|   +---/nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27 [...]
+                </code></pre>
+              </div>
+            </div>
+          </div>
+          <footer>* Bring Your Own Dependencies</footer>
+        </section>
+        <section>
+          <header><span>Nix</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;Nix Shell</h1></div>
+              <div class="column content-right">
+                <pre><code class="bash">
+~ λ nix-shell -p kafkacat
+
+[nix-shell:~]$ kafkacat -V
+kafkacat - Apache Kafka producer and consumer tool
+https://github.com/edenhill/kafkacat
+Copyright (c) 2014-2015, Magnus Edenhill
+Version 1.3.1 (JSON) (librdkafka 1.0.0 builtin.features=gzip,snappy,ssl,sasl,regex,lz4,sasl_plain,sasl_scram,plugins)
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nixpkgs</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;nixpkgs</h1></div>
+              <div class="column content-right">
+                <ul class="fancy">
+                  <li>GitHub repo<sup>*</sup></li>
+                  <li>~180,000 commits</li>
+                  <li>&gt;2,000 contributors</li>
+                  <li>&gt;50,000 packages<sup>+</sup></li>
+                  <li>~50,000 Pull Requests</li>
+                  <li>MIT licensed</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer>* https://github.com/nixos/nixpkgs<br />+ https://nixos.org/nixos/packages.html</footer>
+        </section>
+        <section>
+          <header><span>Nixpkgs</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;nixpkgs</h1></div>
+              <div class="column content-right">
+                <span>One of the top 5 GitHub repositories<sup>*</sup><sup>+</sup></span>
+                <ol>
+                  <li>Kubernetes</li>
+                  <li>Spark</li>
+                  <li>Visual Studio Code</li>
+                  <li>Nixpkgs</li>
+                  <li>Rust</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer>* https://u.today/githubs-top-100-projects-whats-shaping-our-technology-world<br />+ https://github.com/UOSnetwork/uos.docs/blob/f1e4bbae43ce5b98384c17b321a00150ce5052ae/yellow_paper/uos_yellow_paper.eng.pdf</footer>
+        </section>
+        <section>
+          <header><span>Nixpkgs</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;Hydra</h1></div>
+              <div class="column content-right">
+                <ul class="fancy">
+                  <li>Continuous integration</li>
+                  <li>Pushes channel updates</li>
+                  <li>Various jobsets</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>NixOS</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><img src="static/images/nix-snowflake.svg" style="height: 64px; width: 64px; position: relative; top: 10px;" />&nbsp;NixOS</h1></div>
+              <div class="column content-right">
+                <span><em>NixOS is a Linux distribution with a unique approach to package and configuration management. Built on top of the Nix package manager, it is completely declarative, makes upgrading systems reliable, and has many other advantages.</em><sup>*</sup></span>
+              </div>
+            </div>
+          </div>
+          <footer>* https://nixos.org/</footer>
+        </section>
+        <section>
+          <header><span>NixOS</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-clone far"></i>&nbsp;Reproducibility<sup>*</sup></h1></div>
+              <div class="column content-right">
+                <img src="static/images/2019-03-29-103421_900x431_scrot.png" style="border: solid 1px #CCCCCC; height: 431px; width: 900px;" />
+              </div>
+            </div>
+          </div>
+          <footer>* https://r13y.com/</footer>
+        </section>
+        <section>
+          <header><span>NixOS</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-truck-container fas"></i>&nbsp;Install*</h1></div>
+              <div class="column content-right">
+                <ul class="fancy">
+                  <li>Booting the system</li>
+                  <li>Partitioning and formatting</li>
+                  <li>Installing</li>
+                </ul><br />
+                <pre><code class="bash">
+# gdisk
+# mkfs.ext4
+# mount
+# curl configuration.nix || nixos-generate-config
+# nixos-install
+                </code></pre>
+                <br /><span><i class="fa-check fas"></i>&nbsp;Done</span>
+              </div>
+            </div>
+          </div>
+          <footer>* https://nixos.org/nixos/manual/index.html#sec-installation (Let's compare apples to oranges <i class="fa-grin-wink far"></i>)</footer>
+        </section>
+        <section>
+          <header><span>NixOS</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-tools fas"></i>&nbsp;Configuration</h1></div>
+              <div class="column content-right">
+                <pre><code class="nix">
+boot.kernel.sysctl = {
+  "vm.dirty_background_ratio" = 20;
+  "vm.dirty_ratio" = 30;
+  "vm.dirty_writeback_centisecs" = 500;
+  "vm.dirty_expire_centisecs" = 3000;
+  "vm.drop_caches" = 1;
+  "vm.swappiness" = 1;
+  "vm.vfs_cache_pressure" = 60;
+};
+
+hardware = {
+  pulseaudio.enable = true;
+  u2f.enable = true;
+};
+
+virtualisation.docker = {
+  enable = true;
+  extraOptions = ''--config-file=/etc/docker-daemon.json'';
+};
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>NixOS</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-tools fas"></i>&nbsp;Configuration</h1></div>
+              <div class="column content-right">
+                <pre><code class="nix">
+environment.systemPackages = with pkgs; [
+  autocutsel
+  bat
+  binutils
+  conky
+  exa
+  feh
+  git
+  gnupg1compat
+  htop
+  i3lock-fancy
+  jq
+  oh-my-zsh
+  ripgrep
+  rofi
+  skopeo
+  (vivaldi.override { proprietaryCodecs = true; })
+];
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+          <header><span>NixOS</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-plane fas"></i>&nbsp;On-the-fly updates</h1></div>
+              <div class="column content-right">
+                <pre><code class="shell">
+~ λ sudo nixos-rebuild switch --upgrade
+[sudo] password for nequi:
+unpacking channels...
+building Nix...
+building the system configuration...
+[...]
+activating the configuration...
+setting up /etc...
+reloading user units for nequi...
+setting up tmpfiles
+reloading the following units: dbus.service
+restarting the following units: polkit.service
+starting the following units: accounts-daemon.service, cups-browsed.service, cups.service, systemd-udevd-control.socket, systemd-udevd-kernel.socket, tlp.service
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>NixOS</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-stopwatch fas"></i>&nbsp;Try before you buy</h1></div>
+              <div class="column content-right">
+                QEMU VM from system configuration
+                <pre><code class="shell">
+~ λ nixos-rebuild build-vm
+[...]
+Done.  The virtual machine can be started by running /nix/store/p77x20ar4869991nkq3h0f8n9w08jhjz-nixos-vm/bin/run-nixus-desktop-vm
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>NixOps</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-cloud fas"></i>&nbsp;Cloud/Cluster Deployments</h1></div>
+              <div class="column content-right">
+                <pre><code class="nix">
+{
+  webserver =
+    { deployment.targetEnv = "virtualbox";
+      services.httpd.enable = true;
+      services.httpd.documentRoot = "/data";
+      fileSystems."/data" =
+        { fsType = "nfs4";
+          device = "fileserver:/"; };
+    };
+
+  fileserver =
+    { deployment.targetEnv = "virtualbox";
+      services.nfs.server.enable = true;
+      services.nfs.server.exports = "...";
+    };
+}
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix: Python</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-python fab"></i>&nbsp;Packaging</h1></div>
+              <div class="column content-right">
+                <pre><code class="shell">
+λ bat default.nix -p
+with import &lt;nixpkgs&gt; {};
+with python37Packages;
+
+buildPythonPackage rec {
+  name = "mypackage";
+  src = ./source;
+  propagatedBuildInputs = [ pytest numpy pkgs.libsndfile ];
+}
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix: Python</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-python fab"></i>&nbsp;Building</h1></div>
+              <div class="column content-right">
+                <pre><code class="shell">
+λ nix-build .
+[...]
+checking for references to /build/ in /nix/store/svqqr1cbjfw2ymn8jx7ds073yw2sxlni-python3.7-mypackage...
+running install tests
+running test
+running egg_info
+writing foo.egg-info/PKG-INFO
+writing dependency_links to foo.egg-info/dependency_links.txt
+writing requirements to foo.egg-info/requires.txt
+writing top-level names to foo.egg-info/top_level.txt
+package init file 'foo/__init__.py' not found (or not a regular file)
+reading manifest file 'foo.egg-info/SOURCES.txt'
+writing manifest file 'foo.egg-info/SOURCES.txt'
+running build_ext
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.000s
+
+OK
+pytestcachePhase
+/nix/store/svqqr1cbjfw2ymn8jx7ds073yw2sxlni-python3.7-mypackage
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix: Python</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-python fab"></i>&nbsp;Building (again)</h1></div>
+              <div class="column content-right">
+                <pre><code class="shell">
+λ nix-build .
+/nix/store/svqqr1cbjfw2ymn8jx7ds073yw2sxlni-python3.7-mypackage
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix: Python</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-python fab"></i>&nbsp;Shell from package</h1></div>
+              <div class="column content-right">
+                <pre><code class="shell">
+λ nix-shell ./default.nix
+
+[nix-shell:/tmp]$ python3
+Python 3.7.3 (default, Mar 25 2019, 20:59:09)
+[GCC 7.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pytest
+>>> pytest.fail("HAHA")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/nix/store/9a0b0mrlmdscpl007hk5s4l6334wzvm9-python3.7-pytest-4.2.1/lib/python3.7/site-packages/_pytest/outcomes.py", line 113, in fail
+    raise Failed(msg=msg, pytrace=pytrace)
+Failed: HAHA
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix: Python</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-python fab"></i>&nbsp;Shell</h1></div>
+              <div class="column content-right">
+                <pre><code class="shell">
+λ nix-shell -p python3 -p python3Packages.pytest
+
+[nix-shell:/tmp]$ python3
+Python 3.7.3 (default, Mar 25 2019, 20:59:09)
+[GCC 7.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pytest
+>>>
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix: Haskell</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-lambda fas"></i>&nbsp;Shell</h1></div>
+              <div class="column content-right">
+                <pre><code class="shell">
+λ nix-shell -p "haskellPackages.ghcWithPackages (pkgs: [pkgs.mtl])"
+[nix-shell:/tmp]$ ghci
+GHCi, version 8.6.5: http://www.haskell.org/ghc/  :? for help
+Prelude> import Control.Monad.Except
+Prelude Control.Monad.Except> import Control.Monad.Trans
+Prelude Control.Monad.Except Control.Monad.Trans>
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <header><span>Nix: Haskell</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-lambda fas"></i>&nbsp;Stack</h1></div>
+              <div class="column content-right">
+                <span>With Nix enabled, stack build and stack exec will automatically launch themselves in a local build environment (using nix-shell behind the scenes)<sup>+</sup></span>
+                <pre><code class="shell">
+λ bat stack.yaml -p
+resolver: lts-13.20
+
+nix:
+  enable: true
+  shell-file: shell.nix
+# path: [nixpkgs=/my/own/nixpkgs/clone]
+
+packages:
+- .
+                </code></pre>
+              </div>
+            </div>
+          </div>
+          <footer>+ https://docs.haskellstack.org/en/stable/nix_integration/</footer>
+        </section>
+        <section>
+          <header><span>Nix: Haskell</span></header>
+          <div class="wrap">
+            <div class="grid sm">
+              <div class="column"><h1><i class="fa-lambda fas"></i>&nbsp;Stack (Shell)</h1></div>
+              <div class="column content-right">
+                <pre><code class="shell">
+λ bat shell.nix -p
+{ghc}:
+with (import <nixpkgs> {});
+
+haskell.lib.buildStackProject {
+  inherit ghc;
+  name = "myEnv";
+  buildInputs = [ zlib ];
+}
+                </code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="wrap content-center">
+            <h1><strong><i class="fa-thumbs-up fas"></i>&nbsp;Thank you</strong></h1>
+            <br />
+            <h3><strong><i class="fa-question-circle fas"></i>&nbsp;Questions?</strong></h3>
+          </div>
+        </section>
+      </article>
+    </main>
+    <script src="static/js/webslides.js"></script>
+    <script>
+      window.ws = new WebSlides();
+    </script>
+  </body>
+</html>
